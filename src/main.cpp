@@ -9,6 +9,7 @@
 
 #include "core.h"
 #include "vex.h"
+#include "ai_vision_sensor.h"
 using namespace vex;
 
 // A global instance of competition
@@ -32,7 +33,7 @@ tracking_wheel_cfg_t left_enc_cfg{-0.0625, 3.625, M_PI, 1.0625};
 tracking_wheel_cfg_t right_enc_cfg{-0.0625, -3.625, 0, 1.0625};
 tracking_wheel_cfg_t front_enc_cfg{4.5, -0.375, (M_PI/2), 1.0625};
 
-aivision sensor(vex::PORT15/*, detect*/);
+aivision sensor(vex::PORT15);
 
 // ================ OUTPUTS ================
 // Motors
