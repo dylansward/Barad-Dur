@@ -148,49 +148,49 @@ void usercontrol(void) {
     // User control code here, inside the loop
     sensor.modelDetection(true);
 
+    // All AI Objects
+    con.ButtonA.pressed([]() {
+        sensor.takeSnapshot(aivision::ALL_AIOBJS);
+        printf("I took snapshot. Detected %ld object(s).\n", sensor.objectCount);
+
+        for(int i = 0; i < sensor.objectCount; i++) {
+            vex::aivision::object* curr = &sensor.objects[i];
+            printf("Detected a %ld at (%d, %d)\n", curr->id, curr->centerX, curr->centerY);
+        }
+
+        printf("-------------------\n");
+    });
+
+    // All AprilTags
+    con.ButtonB.pressed([]() {
+        sensor.takeSnapshot(aivision::ALL_TAGS);
+        printf("Took snapshot. Detected %ld tag(s).\n", sensor.objectCount);
+
+        for(int i = 0; i < sensor.objectCount; i++) {
+            vex::aivision::object* curr = &sensor.objects[i];
+            printf("Detected tag %d at (%d, %d)\n", curr->id, curr->centerX, curr->centerY);
+        }
+
+        printf("-------------------\n");
+    });
+
+    // All Colors
+    con.ButtonX.pressed([]() {
+        sensor.takeSnapshot(aivision::ALL_COLORS);
+        printf("Took snapshot. Detected %ld color(s).\n", sensor.objectCount);
+
+        for(int i = 0; i < sensor.objectCount; i++) {
+            vex::aivision::object* curr = &sensor.objects[i];
+            printf("Detected color %d at (%d, %d)\n", curr->id, curr->centerX, curr->centerY);
+        }
+
+        printf("-------------------\n");
+    });
+
     while (1) {
         // This is the main execution loop for the user control program.
         // Each time through the loop your program should update motor + servo
         // values based on feedback from the joysticks.
-
-        // All AI Objects
-        con.ButtonA.pressed([]() {
-            sensor.takeSnapshot(aivision::ALL_AIOBJS);
-            printf("I took snapshot. Detected %ld object(s).\n", sensor.objectCount);
-
-            for(int i = 0; i < sensor.objectCount; i++) {
-                vex::aivision::object* curr = &sensor.objects[i];
-                printf("Detected a %ld at (%d, %d)\n", curr->id, curr->centerX, curr->centerY);
-            }
-
-            printf("-------------------\n");
-        });
-
-        // All AprilTags
-        con.ButtonB.pressed([]() {
-            sensor.takeSnapshot(aivision::ALL_TAGS);
-            printf("Took snapshot. Detected %ld tag(s).\n", sensor.objectCount);
-
-            for(int i = 0; i < sensor.objectCount; i++) {
-                vex::aivision::object* curr = &sensor.objects[i];
-                printf("Detected tag %d at (%d, %d)\n", curr->id, curr->centerX, curr->centerY);
-            }
-
-            printf("-------------------\n");
-        });
-
-        // All Colors
-        con.ButtonX.pressed([]() {
-            sensor.takeSnapshot(aivision::ALL_COLORS);
-            printf("Took snapshot. Detected %ld color(s).\n", sensor.objectCount);
-
-            for(int i = 0; i < sensor.objectCount; i++) {
-                vex::aivision::object* curr = &sensor.objects[i];
-                printf("Detected color %d at (%d, %d)\n", curr->id, curr->centerX, curr->centerY);
-            }
-
-            printf("-------------------\n");
-        });
 
         double straight = (double)con.Axis3.position() / 100;
         double turn = (double)con.Axis1.position() / 100;
