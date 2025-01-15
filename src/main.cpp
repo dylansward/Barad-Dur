@@ -44,8 +44,9 @@ vex::motor right_front_bottom(vex::PORT2, vex::gearSetting::ratio6_1, false);
 vex::motor right_back_top(vex::PORT1, vex::gearSetting::ratio6_1, true);
 vex::motor right_back_bottom(vex::PORT4, vex::gearSetting::ratio6_1, false);
 
-vex::motor_group left_motors{left_front_top, left_front_bottom, left_back_top, left_back_bottom};
-vex::motor_group right_motors{right_front_top, right_front_bottom, right_back_top, right_back_bottom};
+vex::motor intake_roller(vex::PORT19, vex::gearSetting::ratio6_1, false);
+vex::motor intake_ramp(vex::PORT20, vex::gearSetting::ratio6_1, false);
+vex::motor conveyor(vex::PORT9, vex::gearSetting::ratio18_1, true);
 
 std::map<std::string, vex::motor &> motor_names{
   {"left front top", left_front_top},   {"left front bottom", left_front_bottom},   {"left back top", left_back_top},   {"left back bottom", left_back_bottom},
@@ -53,6 +54,9 @@ std::map<std::string, vex::motor &> motor_names{
   {"right front top", right_front_top},   {"right front bottom", right_front_bottom},   {"right back top", right_back_top},   {"right back bottom", right_back_bottom},
 
 };
+
+vex::motor_group left_motors{left_front_top, left_front_bottom, left_back_top, left_back_bottom};
+vex::motor_group right_motors{right_front_top, right_front_bottom, right_back_top, right_back_bottom};
 
 // ================ SUBSYSTEMS ================
 
@@ -106,7 +110,7 @@ TankDrive drive_sys(left_motors, right_motors, robot_cfg, &odom);
 /*---------------------------------------------------------------------------*/
 
 void pre_auton(void) {
-    imu.startCalibration();
+
     // All activities that occur before the competition starts
     // Example: clearing encoders, setting servo positions, ...
 }
@@ -144,10 +148,10 @@ void usercontrol(void) {
         // Each time through the loop your program should update motor + servo
         // values based on feedback from the joysticks.
 
-        // ........................................................................
-        // Insert user code here. This is where you use the joystick values to
-        // update your motors, etc.
-        // ........................................................................
+        double straight = (double)con.Axis3.position() / 100;
+        double turn = (double)con.Axis1.position() / 100;
+
+        drive_sys.drive_arcade(straight, turn * 0.75, 1, TankDrive::BrakeType::None);
 
         wait(20, msec); // Sleep the task for a short amount of time to
                         // prevent wasted resources.
