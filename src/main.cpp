@@ -33,7 +33,7 @@ tracking_wheel_cfg_t left_enc_cfg{-0.0625, 3.625, M_PI, 1.0625};
 tracking_wheel_cfg_t right_enc_cfg{-0.0625, -3.625, 0, 1.0625};
 tracking_wheel_cfg_t front_enc_cfg{4.5, -0.375, (M_PI/2), 1.0625};
 
-aivision sensor(vex::PORT15);
+aivision sensor(vex::PORT9);
 
 // ================ OUTPUTS ================
 // Motors
@@ -151,11 +151,13 @@ void usercontrol(void) {
     // All AI Objects
     con.ButtonA.pressed([]() {
         sensor.takeSnapshot(aivision::ALL_AIOBJS);
-        printf("I took snapshot. Detected %ld object(s).\n", sensor.objectCount);
+        printf("I took snapshot. Detected %ld object(s).\n\n", sensor.objectCount);
 
         for(int i = 0; i < sensor.objectCount; i++) {
             vex::aivision::object* curr = &sensor.objects[i];
             printf("Detected a %ld at (%d, %d)\n", curr->id, curr->centerX, curr->centerY);
+            sensorDistanceTest(curr->centerX, curr->originY+curr->height);
+            if(i < sensor.objectCount-1) printf("\n");
         }
 
         printf("-------------------\n");
