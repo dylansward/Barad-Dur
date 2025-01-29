@@ -23,6 +23,8 @@ point_t cameraRelativeTest(int pixelX, int pixelY) {
     return point_t{c*sin(deg2rad(phi)), c*cos(deg2rad(phi))};
 }
 
-point_t fieldRelativeTest(int pixelX, int pixelY) {
-    point_t point = cameraRelativeTest(pixelX, pixelY);
+point_t fieldRelativeTest(int pixelX, int pixelY, OdometryBase* odom) {
+    point_t point = cameraRelativeTest(pixelX, pixelY) + cameraOffset.get_point();
+
+
 }
